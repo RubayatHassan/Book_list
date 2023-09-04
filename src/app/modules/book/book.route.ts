@@ -24,4 +24,4 @@ router.delete(
         BookController.deleteFromDB);
          
          
-export const UserRoutes = router;
+export const BookRoutes = router;

@@ -34,7 +34,8 @@ const getByIdFromDB = async (id: string): Promise<Book | null> => {
             id
         },
         include: {
-            reviewsAndRatings : true
+            reviewsAndRatings : true,
+            orderedBooks : true
             
         }
     });
@@ -48,7 +49,8 @@ const updateIntoDB = async (id: string, payload: Partial<Book>): Promise<Book> =
         },
         data: payload,
         include: {
-            reviewsAndRatings : true
+            reviewsAndRatings : true,
+            orderedBooks : true
         }
     });
     return result;
@@ -61,6 +63,7 @@ const deleteFromDB = async (id: string): Promise<Book> => {
         },
         include: {
             reviewsAndRatings : true,
+            orderedBooks : true
         }
     })
     return result;

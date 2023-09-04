@@ -1,23 +1,28 @@
 import express from 'express';
-import { ReviewAndRatingController } from '../review and rating/review&rating.controller';
-
+import validateRequest from '../../middlewares/validateRequest';
+import { UserController } from './user.controller';
+import { UserValidation } from './user.validation';
 const router = express.Router();
 
-router.get('/', ReviewAndRatingController.getAllFromDB)
 
-router.get('/:id', ReviewAndRatingController.getByIdFromDB);
+router.get('/', UserController.getAllFromDB)
+
+router.get('/:id', UserController.getByIdFromDB);
+
 
 router.post(
     '/',
-    ReviewAndRatingController.insertIntoDB
+    validateRequest(UserValidation.create),
+    UserController.insertIntoDB
 )
 
 router.patch(
     '/:id',
-    ReviewAndRatingController.updateIntoDB)
+    UserController.updateIntoDB)
 
 router.delete(
         '/:id',
-         ReviewAndRatingController.deleteFromDB);
-                 
+         UserController.deleteFromDB);
+         
+         
 export const UserRoutes = router;

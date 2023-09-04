@@ -21,6 +21,7 @@ model User {
   profileImg String?
 
   reviewsAndRatings ReviewAndRating[]
+  orders Order[]
 
   @@map("users")
 }
@@ -43,6 +44,8 @@ model Book {
   categoryId      String
   category        Category @relation(fields: [categoryId], references: [id])
   reviewsAndRatings ReviewAndRating[]
+  orderedBooks OrderedBook[] 
+  
 
   @@map("books")
 }
@@ -59,13 +62,23 @@ model ReviewAndRating {
   @@map("reviewandratings")
 }
 
-model Order {
-  id           String  @id @default(uuid())
-  userId       String
-  orderedBooks Json
-  status       String  @default("pending")
-  createdAt    DateTime
-
-  @@map("oeders")
+model OrderedBook {
+  id        String   @id @default(uuid())
+  orderId   String
+  bookId    String
+  quantity  Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  book      Book     @relation(fields: [bookId], references: [id])
 }
+
+model Order {
+  id           String        @id @default(uuid())
+  userId       String
+  orderedBooks OrderedBook[] 
+  status       String        @default("pending")
+  createdAt    DateTime      @default(now())
+  user         User          @relation(fields: [userId], references: [id])
+}
+
+
 

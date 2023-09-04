@@ -22,4 +22,4 @@ router.delete(
         CategoryController.deleteFromDB);
          
          
-export const UserRoutes = router;
+export const CategoriesRoutes = router;

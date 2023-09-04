@@ -32,12 +32,7 @@ const getByIdFromDB = async (id: string): Promise<ReviewAndRating | null> => {
         where: {
             id
         },
-        include: {
-            users : true,
-            books : true
-
-            
-        }
+        
     });
     return result;
 };
@@ -48,10 +43,7 @@ const updateIntoDB = async (id: string, payload: Partial<ReviewAndRating>): Prom
             id
         },
         data: payload,
-        include: {
-            users : true,
-            books : true
-        }
+        
     });
     return result;
 }
@@ -61,10 +53,7 @@ const deleteFromDB = async (id: string): Promise<ReviewAndRating> => {
         where: {
             id
         },
-        include: {
-            users : true,
-            books : true
-        }
+        
     })
     return result;
 }
