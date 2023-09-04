@@ -53,10 +53,23 @@ const updateIntoDB = async (id: string, payload: Partial<User>): Promise<User> =
     return result;
 }
 
+const deleteFromDB = async (id: string): Promise<User> => {
+    const result = await prisma.user.delete({
+        where: {
+            id
+        },
+        include: {
+            reviewsAndRatings : true,
+        }
+    })
+    return result;
+}
+
 
 export const UserService = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,
-    updateIntoDB
+    updateIntoDB,
+    deleteFromDB
 }
