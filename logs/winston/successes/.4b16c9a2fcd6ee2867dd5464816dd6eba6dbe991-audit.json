@@ -1,0 +1,40 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\rubay\\Desktop\\Book_list\\Booklist_project\\logs\\winston\\successes\\.4b16c9a2fcd6ee2867dd5464816dd6eba6dbe991-audit.json",
+    "files": [
+        {
+            "date": 1693589286877,
+            "name": "C:\\Users\\rubay\\Desktop\\Book_list\\Booklist_project\\logs\\winston\\successes\\phu-2023-01-09-23-success.log",
+            "hash": "379e9c886a803cb24434b2a4f36a4e2f607a68e135766cfd195a985bdb2157a9"
+        },
+        {
+            "date": 1693592362573,
+            "name": "C:\\Users\\rubay\\Desktop\\Book_list\\Booklist_project\\logs\\winston\\successes\\phu-2023-02-09-00-success.log",
+            "hash": "f3810393a4d148ea8f78e4e960e6075a60b17f8e08fb987f07b807acc695e700"
+        },
+        {
+            "date": 1693595596121,
+            "name": "C:\\Users\\rubay\\Desktop\\Book_list\\Booklist_project\\logs\\winston\\successes\\phu-2023-02-09-01-success.log",
+            "hash": "aee3861cca61613f277aa1072866e5c8aecf6acca0a7c8d09540895a959568d0"
+        },
+        {
+            "date": 1693667478727,
+            "name": "C:\\Users\\rubay\\Desktop\\Book_list\\Booklist_project\\logs\\winston\\successes\\phu-2023-02-09-21-success.log",
+            "hash": "b06c8a42d375c47ba4a7e219a8c0835f3f5626531c3fac83888a3a2f8894cab6"
+        },
+        {
+            "date": 1693812026404,
+            "name": "C:\\Users\\rubay\\Desktop\\Book_list\\Booklist_project\\logs\\winston\\successes\\phu-2023-04-09-13-success.log",
+            "hash": "2036b6f67073cfa455482652562cdcadcdbb08d6f1d13146f501e8e4c159c33f"
+        },
+        {
+            "date": 1693839819968,
+            "name": "C:\\Users\\rubay\\Desktop\\Book_list\\Booklist_project\\logs\\winston\\successes\\phu-2023-04-09-21-success.log",
+            "hash": "40c0ea24dc3e392b4fc045fffb29751df04c1366fcc475727dc19da8f0593004"
+        }
+    ],
+    "hashType": "sha256"
+}
