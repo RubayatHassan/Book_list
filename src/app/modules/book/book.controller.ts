@@ -2,7 +2,9 @@ import { Book } from "@prisma/client";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import catchAsync from "../../../shared/catchAsync";
+import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
+import { BookFilterAbleFileds } from "./book.contants";
 import { BookService } from "./book.service";
 
 
@@ -18,8 +20,11 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 
+    const filters = pick(req.query, BookFilterAbleFileds);
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
 
-    const result = await BookService.getAllFromDB();
+
+    const result = await BookService.getAllFromDB(filters, options);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
