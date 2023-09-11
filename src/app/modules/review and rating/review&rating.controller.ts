@@ -2,7 +2,9 @@ import { ReviewAndRating } from "@prisma/client";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import catchAsync from "../../../shared/catchAsync";
+import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
+import { ReviewAndRatingFilterAbleFileds } from "./review&rating.contants";
 import { ReviewsAndRatingsService } from "./review&rating.service";
 
 
@@ -17,9 +19,11 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
+    
+    const filters = pick(req.query, ReviewAndRatingFilterAbleFileds);
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
 
-
-    const result = await ReviewsAndRatingsService.getAllFromDB();
+    const result = await ReviewsAndRatingsService.getAllFromDB(filters, options);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
