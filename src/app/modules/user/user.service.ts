@@ -1,131 +1,96 @@
-import { Prisma, PrismaClient, User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
-import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
-import { UserSearchAbleFields } from "./user.contants";
-import { IUserFilterRequest } from "./user.interface";
+import { prisma } from "../../../shared/prisma";
+import { userSearchableFields, userSelect } from "./user.constant";
+import { IUserFilters } from "./user.interface";
 
-const prisma = new PrismaClient();
+const getAllUsers = async (
+	filters: IUserFilters,
+	paginationOptions: IPaginationOptions
+): Promise<Partial<User>[]> => {
 
-const insertIntoDB = async (userData: User): Promise<User> => {
-    const result = await prisma.user.create({
-        data: userData
-    });
+	// Extract searchTerm to implement search query
+	const { searchTerm, ...filtersData } = filters;
+	const { size, skip } =
+		paginationHelpers.calculatePagination(paginationOptions);
 
-    return result;
+	const andConditions = [];
+	// Search needs $OR for searching in specified fields
+	if (searchTerm) {
+		andConditions.push({
+			OR: userSearchableFields.map(field => ({
+				[field]: {
+					contains: searchTerm,
+					mode: 'insensitive',
+				},
+			}))
+		})
+	}
+	// Filters needs $and to fullfill all the conditions
+	if (Object.keys(filtersData).length) {
+		andConditions.push({
+			AND: Object.entries(filtersData).map(([field, value]) => ({
+				[field]: {
+					equals: value,
+				},
+			})),
+		});
+	}
+
+	const whereConditions: Prisma.UserWhereInput =
+		andConditions.length > 0 ? { AND: andConditions } : {};
+
+
+	const result = await prisma.user.findMany({
+		where: whereConditions,
+		select: userSelect,
+		skip,
+		take: size,
+	});
+
+	return result;
 };
 
-const getAllFromDB = async (
 
-    filters: IUserFilterRequest,
-    options: IPaginationOptions
-): Promise<IGenericResponse<User[]>> => {
+const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
+	const result = await prisma.user.findUniqueOrThrow({
+		where: {
+			id,
+		},
+		select: userSelect
+	});
+	console.log(result);
 
-    const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-    const { searchTerm, ...filterData } = filters;
-   
-
-    const andConditons = [];
-
-
-    if (searchTerm) {
-        andConditons.push({
-            OR: UserSearchAbleFields.map((field) => ({
-                [field]: {
-                    contains: searchTerm,
-                    mode: 'insensitive'
-                }
-            }))
-        })
-
-    }
-
-    if (Object.keys(filterData).length > 0) {
-        andConditons.push({
-            AND: Object.keys(filterData).map((key) => ({
-                [key]: {
-                    equals: (filterData as any)[key]
-                }
-            }))
-        })
-    }
-
-
-    const whereConditons: Prisma.UserWhereInput =
-        andConditons.length > 0 ? { AND: andConditons } : {};
-
-    const result = await prisma.user.findMany({
-        where: whereConditons,
-        skip,
-        take: limit,
-        orderBy: options.sortBy && options.sortOrder
-            ? {
-                [options.sortBy]: options.sortOrder
-            }
-            : {
-                createdAt: 'desc'
-            }
-    });
-const total = await prisma.user.count();
-
-    return {
-        meta: {
-            total,
-            page,
-            limit
-        },
-        data: result
-    }
-}
-
-const getByIdFromDB = async (id: string): Promise<User | null> => {
-    const result = await prisma.user.findUnique({
-        where: {
-            id
-        },
-        include: {
-            reviewsAndRatings : true,
-            orders : true
-            
-        }
-    });
-    return result;
+	return result;
 };
 
-const updateIntoDB = async (id: string, payload: Partial<User>): Promise<User> => {
-    const result = await prisma.user.update({
-        where: {
-            id
-        },
-        data: payload,
-        include: {
-            reviewsAndRatings : true,
-            orders : true
-            
-        }
-    });
-    return result;
-}
+const updateUser = async (id: string, payload: Partial<User>): Promise<Partial<User> | null> => {
+	const result = await prisma.user.update({
+		where: {
+			id,
+		},
+		data: payload,
+		select: userSelect
+	});
 
-const deleteFromDB = async (id: string): Promise<User> => {
-    const result = await prisma.user.delete({
-        where: {
-            id
-        },
-        include: {
-            reviewsAndRatings : true,
-            orders : true
-            
-        }
-    })
-    return result;
-}
+	return result;
+};
+const deleteUser = async (id: string): Promise<Partial<User> | null> => {
+	const result = await prisma.user.delete({
+		where: {
+			id,
+		},
+		select: userSelect
+	});
+	return result;
+};
+
 
 
 export const UserService = {
-    insertIntoDB,
-    getAllFromDB,
-    getByIdFromDB,
-    updateIntoDB,
-    deleteFromDB
+	getAllUsers,
+	getSingleUser,
+	updateUser,
+	deleteUser
 }

@@ -1,6 +1,10 @@
-export type IUserFilters = {
-	searchTerm?: string | undefined
-	role?: string
+
+export type IOrderedBook = {
+	bookId: string;
+	quantity: number;
+}
+export type IOrderCreateData = {
+	orderedBooks: IOrderedBook[]
 }
 
 export type IUserSelect = {

@@ -1,40 +1,40 @@
 import express from 'express';
+import { AuthRoutes } from '../modules/auth/auth.route';
 import { BookRoutes } from '../modules/book/book.route';
-import { CategoriesRoutes } from '../modules/categoryBook/catagory.route';
+import { CategoryRoutes } from '../modules/catogory/category.route';
 import { OrderRoutes } from '../modules/order/order.route';
-import { OrdersBookRoutes } from '../modules/orderedBook/orderbook.route';
-import { ReviewAndRatingRoutes } from '../modules/review and rating/review&rating.route';
+import { ProfileRoutes } from '../modules/profile/profile.route';
 import { UserRoutes } from '../modules/user/user.route';
+
 
 const router = express.Router();
 
 const moduleRoutes = [
   // ... routes
   {
-    path: "/users",
-    route: UserRoutes
+    path: '/auth',
+    route: AuthRoutes,
   },
   {
-    path: "/books",
-    route: BookRoutes
+    path: '/users',
+    route: UserRoutes,
   },
   {
-    path: "/categories",
-    route: CategoriesRoutes
+    path: '/categories',
+    route: CategoryRoutes,
   },
   {
-    path: "/reviews&ratting",
-    route: ReviewAndRatingRoutes
+    path: '/books',
+    route: BookRoutes,
   },
   {
-    path: "/Orders",
-    route: OrderRoutes
+    path: '/orders',
+    route: OrderRoutes,
   },
   {
-    path: "/Orderbooks",
-    route: OrdersBookRoutes
-  },
-  
+    path: '/profile',
+    route: ProfileRoutes,
+  }
 ];
 
 moduleRoutes.forEach(route => router.use(route.path, route.route));
